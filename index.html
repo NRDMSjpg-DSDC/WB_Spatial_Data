@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BEUP & MPLAD WebGIS</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header id="topHeader">
+  <div class="header-left">
+    <h1>BEUP &amp; MPLAD WebGIS</h1>
+    <span>Government of West Bengal — Department of Planning &amp; Statistics</span>
+  </div>
+  <div class="header-right">
+    <span id="userBadge" class="user-badge hidden"></span>
+    <button id="loginBtn" onclick="openLogin()">Login</button>
+    <button id="logoutBtn" class="hidden" onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<nav id="topMenu" class="top-menu">
+  <button id="btnTable" class="hidden role-admin" onclick="openTable()">Attribute Table</button>
+  <button id="btnImportCSV" class="hidden role-admin" onclick="document.getElementById('csvFile').click()">Import CSV</button>
+  <input id="csvFile" type="file" accept=".csv" hidden onchange="importCSV(this)">
+  <button id="btnExportCSV" class="hidden role-admin" onclick="downloadCSV()">Export CSV</button>
+  <button id="btnImportGeoJSON" class="hidden role-admin" onclick="document.getElementById('geojsonFile').click()">Import GeoJSON</button>
+  <input id="geojsonFile" type="file" accept=".geojson,.json" hidden onchange="importGeoJSON(this)">
+  <button id="btnExportGeoJSON" class="hidden role-admin" onclick="exportGeoJSON()">Export GeoJSON</button>
+  <button id="btnAddProject" class="hidden role-any" onclick="openProject()">+ Add Project</button>
+  <span id="menuHint" class="menu-hint">Log in to add or manage projects</span>
+</nav>
+
+<div class="layout">
+
+  <aside id="leftPanel">
+    <h3>Administrative Filter</h3>
+    <label>District</label>
+    <select id="cDistrict" onchange="onDistrictChange()"><option value="">All</option></select>
+    <label>Block / Municipality</label>
+    <select id="cBlock" onchange="onBlockChange()"><option value="">All</option></select>
+    <label>Gram Panchayat / Ward</label>
+    <select id="cGP" onchange="onGPChange()"><option value="">All</option></select>
+    <label>MPLAD / BEUP</label>
+    <select id="dScheme" onchange="renderAll()"><option value="">All</option><option>BEUP</option><option>MPLAD</option></select>
+    <label>Name of MP / MLA</label>
+    <select id="dMPMLA" onchange="renderAll()"><option value="">All</option></select>
+    <label>Type of Scheme</label>
+    <select id="dWorkType" onchange="renderAll()"><option value="">All</option></select>
+    <label>Status</label>
+    <select id="fStatus" onchange="renderAll()">
+      <option value="">All</option><option>Proposed</option><option>Approved</option><option>Ongoing</option><option>Completed</option>
+    </select>
+    <button class="wide" onclick="clearAdminFilters()">Clear Filters</button>
+
+    <div class="stats">
+      <div class="stat-row"><b id="total">0</b><span>Total No.</span></div>
+      <div id="statusBreakdown" class="status-breakdown"></div>
+      <div class="stat-row"><b id="cost">₹0</b><span>Total Sanctioned Amount</span></div>
+    </div>
+  </aside>
+
+  <main>
+    <div id="map"></div>
+    <div id="bottomCoordTool" class="coord-tool">
+      <label>Latitude<input id="viewLat" type="number" step="0.000001" placeholder="26.523456"></label>
+      <label>Longitude<input id="viewLon" type="number" step="0.000001" placeholder="88.732145"></label>
+      <button onclick="goToCoordinates()">VIEW</button>
+    </div>
+  </main>
+
+</div>
+
+<footer id="mapFooter">
+  <div class="footer-left">Government of West Bengal | Department of Planning &amp; Statistics | District Spatial Data Centre (DSDC)</div>
+  <div class="footer-center">Visitors: <span id="visitorCount">000000</span></div>
+  <div class="footer-right">Latitude: <span id="cursorLat">--</span> | Longitude: <span id="cursorLon">--</span></div>
+</footer>
+
+<!-- Login modal -->
+<div id="loginModal" class="modal hidden">
+  <div class="modal-card small-card">
+    <div class="modal-head"><h2>Login</h2><button onclick="closeLogin()">×</button></div>
+    <form id="loginForm">
+      <label>Username<input id="loginUser" required autocomplete="username"></label>
+      <label>Password<input id="loginPass" type="password" required autocomplete="current-password"></label>
+      <p id="loginError" class="error-text hidden">Invalid username or password.</p>
+      <div class="form-actions"><button type="button" onclick="closeLogin()">Cancel</button><button type="submit">Login</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- Project modal -->
+<div id="projectModal" class="modal hidden">
+ <div class="modal-card">
+  <div class="modal-head"><h2 id="modalTitle">Add Project</h2><button onclick="closeProject()">×</button></div>
+  <form id="projectForm">
+   <input type="hidden" id="id">
+   <div class="grid">
+    <label>Scheme<select id="scheme" required><option>BEUP</option><option>MPLAD</option></select></label>
+    <label>Project ID<input id="project_code" required></label>
+    <label>Project Name<input id="name" required></label>
+    <label>Name of MP/MLA<input id="mp_mla" placeholder="e.g. Shri A. Roy, MP"></label>
+    <label>District<input id="district"></label>
+    <label>Block / Municipality<input id="block"></label>
+    <label>GP / Ward<input id="gp"></label>
+    <label>Village / Location<input id="village"></label>
+    <label>Work Type<input id="work_type" placeholder="Road / Building / Water / Drain etc."></label>
+    <label>Sanctioned Amount<input id="amount" type="number" step="0.01"></label>
+    <label>Status<select id="status"><option>Proposed</option><option>Approved</option><option>Ongoing</option><option>Completed</option></select></label>
+    <label id="latRow">Latitude<input id="lat" type="number" step="0.000001"></label>
+    <label id="lonRow">Longitude<input id="lon" type="number" step="0.000001"></label>
+    <label>Sanction Date<input id="sanction_date" type="date"></label>
+    <label>Completion Date<input id="completion_date" type="date"></label>
+    <label class="full">Remarks<textarea id="remarks"></textarea></label>
+   </div>
+   <p class="hint">Tip: click the map to place a point, or use the drawing toolbar (top-left of the map) to draw a point, line, or polygon.</p>
+   <p id="geomInfo" class="hint geom-info"></p>
+   <div class="form-actions-left">
+     <button type="button" onclick="requestRedraw()">Draw / Redraw Shape on Map</button>
+     <button type="button" onclick="clearGeometry()">Clear Shape</button>
+   </div>
+   <div class="form-actions"><button type="button" onclick="closeProject()">Cancel</button><button type="submit">Save Project</button></div>
+  </form>
+ </div>
+</div>
+
+<!-- Attribute table modal -->
+<div id="tableModal" class="modal hidden">
+ <div class="modal-card wide-card">
+  <div class="modal-head"><h2>Project Attribute Table</h2><button onclick="closeTable()">×</button></div>
+  <div class="table-wrap"><table id="projectTable"></table></div>
+ </div>
+</div>
+
+<!-- Current-location info modal -->
+<div id="locInfoModal" class="modal hidden">
+  <div class="modal-card small-card">
+    <div class="modal-head"><h2>Your Current Location</h2><button onclick="closeLocInfo()">×</button></div>
+    <p id="locInfoBody"></p>
+    <div class="form-actions"><button type="button" onclick="closeLocInfo()">Close</button></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+scheme,project_code,name,mp_mla,district,block,gp,village,work_type,amount,status,geometry_type,lat,lon,geometry,sanction_date,completion_date,remarks
+BEUP,BEUP-001,Construction of Community Hall,"Shri A. Roy, MP",Jalpaiguri,Mal,Sample GP,Sample Village,Building,2500000,Approved,Point,26.65,88.78,,2026-04-15,,Demo record
+MPLAD,MPLAD-001,Improvement of Rural Road,"Smt. B. Sarkar, MLA",Jalpaiguri,Maynaguri,Sample GP,Sample Village,Road,1800000,Ongoing,Point,26.55,88.72,,2026-05-20,,Demo record
+BEUP,BEUP-002,Installation of Drinking Water Facility,"Shri A. Roy, MP",Jalpaiguri,Dhupguri,Sample GP,Sample Village,Water,850000,Completed,Point,26.58,89.00,,2025-08-10,2026-02-20,"Demo record — outside the sample district boundary on purpose"

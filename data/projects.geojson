@@ -1,0 +1,174 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          88.78,
+          26.65
+        ]
+      },
+      "properties": {
+        "scheme": "BEUP",
+        "project_code": "BEUP-001",
+        "name": "Construction of Community Hall",
+        "district": "Jalpaiguri",
+        "block": "Mal",
+        "gp": "Sample GP",
+        "village": "Sample Village",
+        "work_type": "Building",
+        "amount": "2500000",
+        "status": "Approved",
+        "sanction_date": "2026-04-15",
+        "completion_date": "",
+        "remarks": "Demo record",
+        "id": 1,
+        "mp_mla": "Shri A. Roy, MP"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          88.72,
+          26.55
+        ]
+      },
+      "properties": {
+        "scheme": "MPLAD",
+        "project_code": "MPLAD-001",
+        "name": "Improvement of Rural Road",
+        "district": "Jalpaiguri",
+        "block": "Maynaguri",
+        "gp": "Sample GP",
+        "village": "Sample Village",
+        "work_type": "Road",
+        "amount": "1800000",
+        "status": "Ongoing",
+        "sanction_date": "2026-05-20",
+        "completion_date": "",
+        "remarks": "Demo record",
+        "id": 2,
+        "mp_mla": "Smt. B. Sarkar, MLA"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.0,
+          26.58
+        ]
+      },
+      "properties": {
+        "scheme": "BEUP",
+        "project_code": "BEUP-002",
+        "name": "Installation of Drinking Water Facility",
+        "district": "Jalpaiguri",
+        "block": "Dhupguri",
+        "gp": "Sample GP",
+        "village": "Sample Village",
+        "work_type": "Water",
+        "amount": "850000",
+        "status": "Completed",
+        "sanction_date": "2025-08-10",
+        "completion_date": "2026-02-20",
+        "remarks": "Demo record",
+        "id": 3,
+        "mp_mla": "Shri A. Roy, MP"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            88.7,
+            26.6
+          ],
+          [
+            88.72,
+            26.61
+          ],
+          [
+            88.74,
+            26.615
+          ],
+          [
+            88.76,
+            26.62
+          ]
+        ]
+      },
+      "properties": {
+        "scheme": "MPLAD",
+        "project_code": "MPLAD-002",
+        "name": "Upgradation of Village Approach Road",
+        "district": "Jalpaiguri",
+        "block": "Mal",
+        "gp": "Sample GP",
+        "village": "Sample Village",
+        "work_type": "Road",
+        "amount": "3200000",
+        "status": "Ongoing",
+        "sanction_date": "2026-03-01",
+        "completion_date": "",
+        "remarks": "Demo line record",
+        "id": 4,
+        "mp_mla": "Smt. B. Sarkar, MLA"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              88.775,
+              26.645
+            ],
+            [
+              88.782,
+              26.645
+            ],
+            [
+              88.782,
+              26.652
+            ],
+            [
+              88.775,
+              26.652
+            ],
+            [
+              88.775,
+              26.645
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "scheme": "BEUP",
+        "project_code": "BEUP-003",
+        "name": "Renovation of Village Pond",
+        "district": "Jalpaiguri",
+        "block": "Mal",
+        "gp": "Sample GP",
+        "village": "Sample Village",
+        "work_type": "Water Body",
+        "amount": "1200000",
+        "status": "Proposed",
+        "sanction_date": "",
+        "completion_date": "",
+        "remarks": "Demo polygon record",
+        "id": 5,
+        "mp_mla": "Shri C. Barman, MLA"
+      }
+    }
+  ]
+}
